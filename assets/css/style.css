@@ -29,6 +29,8 @@
     --tertiary-color: hsl(var(--hue-color), 10%, 10%);
 
     --column-width: 9rem;
+
+    --transition-time: .5s;
 }
 
 * {
@@ -40,12 +42,16 @@ html {
 }
 
 body {
+    scroll-behavior: smooth;
     margin: 0;
     font-size: var(--normal-font-size);
     background-color: var(--body-color);
     color: var(--text-color);
 }
 
+a {
+    text-decoration: none;
+}
 
 
 
@@ -94,8 +100,8 @@ button:hover {
 }
 
 .container {
-    width: 100%;
-    height: 100%;
+    width: 100dvw;
+    height: 100dvh;
     display: flex;
     margin: auto;
 }
@@ -104,64 +110,86 @@ button:hover {
     width: var(--column-width);
     background: var(--tertiary-color);
     height: 100dvh;
+    padding: .5rem 0;
     overflow-x: hidden;
+    transition: var(--transition-time);
 }
 
 
 .toolbar__item,
 .toolbar__item-2 {
-
     width: 100%;
-
     border-radius: 1.5rem;
     padding: 1rem;
     background: var(--secondary-color);
     border: solid 3px var(--tertiary-color);
     text-align: center;
     cursor: pointer;
-    transition: .5s;
+    transition: var(--transition-time);
 }
 
 .toolbar__item {
+    opacity: 0.7;
+    filter: blur(.5px);
     aspect-ratio: 1;
+    transition: var(--transition-time);
 }
 
 .description {
-    opacity: 0;
-    transition: .5s;
+    transition: var(--transition-time);
+}
+
+
+.toolbar__item:hover,
+.toolbar__item-2:hover {
+    filter: blur(0px);
+    background-color: var(--primary-color);
+    transition: calc(var(--transition-time)/1.2);
 }
 
 .toolbar__item:hover {
-    background-color: var(--primary-color);
-    transition: .2s;
-}
-
-.toolbar__item-2:hover {
-    background-color: var(--primary-color);
-    transition: .2s;
+    opacity: 1;
 }
 
 .toolbar__item .active:hover {
     background-color: var(--tertiary-color);
-    transition: .2s;
+    opacity: 1;
+    transition: var(--transition-time);
+}
+
+.toolbar__item:hover .description,
+.toolbar__item:hover .icon-resizing {
+    scale: 1.2;
+    transition: var(--transition-time);
 }
 
 .toolbar__item:hover .description {
-    opacity: 1;
-    transition: .5s;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-skip-ink: auto;
+}
+
+.toolbar__item:hover .icon-resizing {
+    rotate: -340deg;
+    transition: var(--transition-time);
 }
 
 
 /* when tool is active */
 .active {
     opacity: 1;
+    filter: blur(0px);
     background-color: var(--tertiary-color);
-    transition: .2s;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-skip-ink: auto;
+    transition: var(--transition-time);
 }
 
 
 .second__toolbar {
     display: none;
+    flex-direction: column;
     padding: 1rem;
     border-radius: 2rem;
     position: fixed;
@@ -170,27 +198,33 @@ button:hover {
     right: var(--column-width);
     width: max-content;
     background: var(--tertiary-color);
-    z-index: 100;
+    transition: var(--transition-time);
+    z-index: 1500;
 }
 
 
 .show {
-    display: block;
+    display: flex;
     opacity: 1;
-    transition: .2s;
+    transition: var(--transition-time);
 }
 
 .text__list .toolbar__item-2:hover {
     background-color: var(--secondary-color);
+    transition: calc(var(--transition-time)/ 2);
 }
 
 .text__input {
     width: 100%;
-    height: 2rem;
+    height: 4rem;
     border-radius: 1rem;
+    padding-left: .5rem;
+    padding-top: .5rem;
+    white-space: pre-line;
 }
 
 .text__description {
+
     text-align: start;
     margin-right: 1.5rem;
 }
@@ -206,6 +240,7 @@ button:hover {
     margin-left: .5rem;
     border-radius: 1rem;
     background-color: var(--tertiary-color);
+    transition: var(--transition-time);
 }
 
 .text__color {
@@ -224,11 +259,13 @@ button:hover {
 
 .stay__active {
     background-color: var(--primary-color);
+    transition: .2s;
 }
 
 .icon-resizing {
     width: 2rem;
     aspect-ratio: 1;
+    transition: var(--transition-time);
 }
 
 .icon-resizing-2 {
@@ -276,6 +313,7 @@ button:hover {
     text-align: center;
     padding: 3rem 2rem;
     border: medium dashed var(--text-color);
+
 }
 
 .upload__img {
@@ -287,6 +325,7 @@ button:hover {
     width: 100%;
     height: 100%;
     opacity: 0;
+    cursor: pointer;
 }
 
 .img__holder {
@@ -308,12 +347,21 @@ button:hover {
 
 .img__editing {
     position: relative;
-    /* transform: translate(0, 35%); */
+    transform: translate(0%, 35%);
     max-width: 100%;
     max-height: 100%;
     width: 100%;
     height: auto;
-    object-fit: contain;
+    object-fit: cover;
+}
+
+.img__text {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 2rem;
+    z-index: 1000;
+
 }
 
 .tools {
@@ -329,7 +377,7 @@ button:hover {
 }
 
 .disabled {
-    opacity: .2;
+    opacity: .5;
     pointer-events: none;
 }
 
@@ -395,8 +443,114 @@ button:hover {
     margin-left: 1rem;
 }
 
+.btn__gap {
+    margin-right: .5rem;
+}
+
+.btn__label {}
 
 /* mobile */
-@media(max-width: 400px) {}
+@media screen and (max-width: 800px) {
 
-;
+    :root {
+        --column-width: 6rem;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .toolbar {
+        display: flex;
+        width: 100%;
+        height: var(--column-width);
+        padding: .5rem 0;
+        overflow: hidden;
+    }
+
+    .toolbar__item,
+    .toolbar__item-2 {
+        display: flex;
+    }
+
+    .btn__label {
+        display: none;
+    }
+
+    .toolbar__item:hover .description {
+        display: block;
+        transition: var(--transition-time);
+    }
+
+    .active .description {
+        display: block;
+    }
+
+    .active {
+        /* aspect-ratio: auto; */
+        height: 100%;
+        width: calc(var(--column-width) + 2.5rem);
+        transition: var(--transition-time);
+    }
+
+    .toolbar__item:hover {
+        aspect-ratio: auto;
+        height: 100%;
+        width: calc(var(--column-width) + 2.5rem);
+        transition: var(--transition-time);
+    }
+
+    .description {
+        margin-left: 1rem;
+        display: none;
+        position: relative;
+        top: -.75rem;
+    }
+
+    .rotate__list {
+        flex-direction: row;
+        height: min-content;
+        bottom: 3rem;
+        top: calc(100% - calc(var(--column-width) * 2));
+        bottom: 3rem;
+        right: var(--column-width);
+        width: max-content;
+    }
+
+    .text__list {}
+
+    .slider__container,
+    .rotate__list {
+        position: fixed;
+        left: 50%;
+        transform: translate(-50%, 0);
+        bottom: var(--column-width);
+    }
+
+    .btn__export {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .btn__reset {
+        position: fixed;
+        bottom: calc(var(--column-width) - .5rem);
+        right: 1rem;
+    }
+
+    .btn__remove {
+        position: absolute;
+        top: -4.5em;
+        left: 50%;
+        width: max-content;
+    }
+
+    .img__holder {
+        position: fixed;
+        height: calc(100% - (var(--column-width) * 2.5));
+        width: auto;
+        left: 1rem;
+        right: 1rem;
+    }
+}

@@ -14,6 +14,7 @@
 
             <div class="content">
 
+
                 <p class="logo" id="logo">Photo Editor</p>
                 <div class="choose__img">
                     <div class="upload__img-box">
@@ -33,9 +34,6 @@
 
                 </div>
 
-
-                <canvas id="image_canvas"></canvas>
-
                 <div class="img__holder" visibility="false">
                     <button class="btn__remove" title="remove-img" id="remove-img-btn">
                         <svg class="icon-resizing-3 btn__gap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
@@ -49,11 +47,12 @@
                         <span class="btn__label">Remove Image</span>
                     </button>
                     <img class="img__editing" src=" " alt="image" id="image">
+                    <span class="img__text"></span>
                 </div>
 
                 <div class="tools disabled">
-                    <button class="btn__export btn__gap" id="export">
-                        <svg class="icon-resizing-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <button class="btn__export " id="export">
+                        <svg class="icon-resizing-3 btn__gap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path class="icon-color"
                                 d="M8.71,7.71,11,5.41V15a1,1,0,0,0,2,0V5.41l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42l-4-4a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-4,4A1,1,0,1,0,8.71,7.71ZM21,14a1,1,0,0,0-1,1v4a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V15a1,1,0,0,0-2,0v4a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V15A1,1,0,0,0,21,14Z" />
                         </svg>
@@ -70,7 +69,8 @@
 
 
                     <button class="btn__reset" id="clearAll">
-                        <svg class="icon-resizing-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="reset">
+                        <svg class="icon-resizing-3 btn__gap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                            id="reset">
                             <path class="'icon-color"
                                 d="M9.5 1.293a6.47 6.47 0 0 0-6.462 6.46v3.002l-1.5-1.5-1.5 1.5 3.991 3.951 4.009-3.951-1.5-1.5-1.5 1.5v-3c0-2.46 2.001-4.462 4.462-4.462s4.462 2.001 4.462 4.462a4.468 4.468 0 0 1-1.458 3.298l1.348 1.479a6.476 6.476 0 0 0 2.11-4.777A6.47 6.47 0 0 0 9.5 1.293z">
                             </path>
@@ -79,8 +79,8 @@
                     </button>
                 </div>
             </div>
-            <div class="toolbar disabledf">
-                <div class="toolbar__item" id="#top">
+            <div id="toolbar" class="toolbar disabledf">
+                <div class="toolbar__item">
                     <svg class="icon-resizing" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -144,10 +144,12 @@
                 </div>
                 <div class="text__list second__toolbar">
                     <div class="toolbar__item-2">
-                        <input title="text input" type="text" placeholder="Enter Text" class="text__input text__group">
+                        <textarea cols="50" rows="10" placeholder="Enter Text" class="text__input text__group" oninput="
+                            applyText()"></textarea>
                         <div class="text__group">
-                            <input class="text__color " title='Color' type="color">
-                            <div class="paragraph">
+                            <input class="text__color " title='Color' type="color" oninput="
+                            applyText()">
+                            <div class="paragraph btn__italic">
                                 <svg class="icon-resizing-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-italic">
@@ -156,7 +158,7 @@
                                     <line x1="15" y1="4" x2="9" y2="20"></line>
                                 </svg>
                             </div>
-                            <div class="paragraph">
+                            <div class="paragraph btn__bold">
                                 <svg class="icon-resizing-3" viewBox="0 0 11 14" version="1.1"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -176,7 +178,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="paragraph">
+                            <div class="paragraph btn__underline">
                                 <svg class="icon-resizing-3" viewBox="0 0 14 15" version="1.1"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -197,7 +199,7 @@
                                 </svg>
                             </div>
                             <div class="paragraph__group">
-                                <div class="paragraph paragraph__mode" id="align_left">
+                                <div class="paragraph paragraph__mode stay__active" id="align_left">
                                     <svg class="icon-resizing-3" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
                                         style="enable-background:new 0 0 24 24;" xml:space="preserve">
@@ -279,21 +281,27 @@
                         </div>
                         <div class="text__group">
                             <div class="text__description">
-
-                                <p class="" id="Saturation">Opacity <input class="slider" type="range" min="0.5" max="5"
-                                        class="text__opacity-input"></p>
+                                <div class="slider__description">
+                                    <div class="selected__tool" id="slider-value">Opacity</div>
+                                    <div class="selected__value" id="opacity-value-return">1</div>
+                                </div>
+                                <input id='opacity-slider' class="slider" type="range" value="1" step="0.05" min="0"
+                                    max="1" class="text__opacity-input">
                             </div>
                             <div class="text__description">
-
-                                <p class="" id="Saturation">Font Size <input class="slider" type="range" min="0.5"
-                                        max="5" class="text__font-input"></p>
+                                <div class="slider__description">
+                                    <div class="selected__tool">Font Size</div>
+                                    <div class="selected__value" id="font-size-value-return">16px</div>
+                                </div>
+                                <input id='font-size-slider' class="slider" type="range" value="16" step="1" min="16"
+                                    max="80" class="text__font-size-input">
                             </div>
                         </div>
                         <div class="text__btn-group">
-                            <button class="btn__ancel tertiary__color btn__spacing">
+                            <button class="btn__cancel tertiary__color btn__spacing">
                                 <span class="btn__label">Cancel</span>
                             </button>
-                            <button class="btn__delete">
+                            <button class="btn__apply">
                                 <span class="btn__label">Apply</span>
                             </button>
 
